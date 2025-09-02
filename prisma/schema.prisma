@@ -1,0 +1,116 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id
+  name          String
+  email         String         @unique
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  Organization  Organization[]
+  accounts      Account[]
+  sessions      Session[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String    @unique
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+model Contact {
+  id             String        @id
+  name           String
+  email          String?
+  zipCode        String?
+  address        String?
+  neighborhood   String?
+  city           String?
+  state          String?
+  number         String?
+  complement     String?
+  dateOfBirth    DateTime?
+  createdAt      DateTime      @default(now())
+  createdBy      String?
+  updatedBy      String?
+  updatedAt      DateTime?
+  phoneNumber    String
+  sex            Gender
+  deletedAt      DateTime?
+  organizationId String
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+}
+
+model Organization {
+  id           String             @id
+  name         String
+  description  String?
+  status       OrganizationStatus @default(ACTIVE)
+  owner        String
+  createdAt    DateTime           @default(now())
+  createdBy    String?
+  updatedAt    DateTime           @updatedAt
+  updatedBy    String?
+  deletedAt    DateTime?
+  user         User               @relation(fields: [owner], references: [id], onDelete: Cascade)
+  contacts     Contact[]
+}
+
+enum OrganizationStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}

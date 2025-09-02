@@ -1,0 +1,9 @@
+{
+  "buildCommand": "pnpm build",
+  "installCommand": "pnpm install",
+  "framework": "nextjs",
+  "regions": ["gru1"],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
