@@ -24,7 +24,7 @@ export function AppLayout({ children }: AppLayoutProps) {
         {/* Conteúdo principal */}
         <main className="relative overflow-hidden">
           <div className="absolute inset-0 overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-300 hover:scrollbar-thumb-neutral-400 scrollbar-thumb-rounded-full">
-            <div className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8 xl:px-12 max-w-7xl mx-auto">
+            <div className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8 xl:px-12 max-w mx-auto">
               {children}
             </div>
           </div>
