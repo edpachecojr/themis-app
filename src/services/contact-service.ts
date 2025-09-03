@@ -44,6 +44,34 @@ export class ContactService {
         phoneNumber: data.phoneNumber,
         sex: data.sex,
         organizationId, // Campo de multi-tenancy por organização
+
+        // Campos obrigatórios para CRM Parlamentar com valores padrão
+        isVoter: true,
+        politicalInterests: [],
+        votingHistory: [],
+
+        // Campos opcionais para CRM Parlamentar
+        cpf: undefined,
+        rg: undefined,
+        voterId: undefined,
+        maritalStatus: undefined,
+        occupation: undefined,
+        education: undefined,
+        income: undefined,
+        politicalParty: undefined,
+        votingZone: undefined,
+        votingSection: undefined,
+        whatsapp: undefined,
+        instagram: undefined,
+        facebook: undefined,
+        linkedin: undefined,
+        spouseName: undefined,
+        childrenCount: undefined,
+        dependents: undefined,
+        participationLevel: undefined,
+        ageGroup: undefined,
+        socialClass: undefined,
+        urbanRural: undefined,
       };
 
       return await contactRepo.create(contactData);

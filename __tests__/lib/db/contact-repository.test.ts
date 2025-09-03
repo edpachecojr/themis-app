@@ -153,8 +153,19 @@ describe("ContactRepository", () => {
 
       const result = await repository.create(contactData);
 
-      expect(prisma.contact.create).toHaveBeenCalledWith({ data: contactData });
-      expect(result).toEqual(contactData);
+      // Verifica se o create foi chamado com os dados corretos (sem id, pois será gerado)
+      const { id, ...dataWithoutId } = contactData;
+      expect(prisma.contact.create).toHaveBeenCalledWith({
+        data: expect.objectContaining({
+          ...dataWithoutId,
+          id: expect.any(String), // Verifica se um id foi gerado
+        }),
+      });
+
+      // Verifica se o resultado tem os dados corretos
+      expect(result).toMatchObject(dataWithoutId);
+      expect(result.id).toBeDefined();
+      expect(typeof result.id).toBe("string");
     });
   });
 
@@ -255,10 +266,15 @@ describe("ContactRepository", () => {
           OR: [
             { name: { contains: "Test", mode: "insensitive" } },
             { phoneNumber: { contains: "Test", mode: "insensitive" } },
+            { email: { contains: "Test", mode: "insensitive" } },
             { address: { contains: "Test", mode: "insensitive" } },
             { neighborhood: { contains: "Test", mode: "insensitive" } },
             { city: { contains: "Test", mode: "insensitive" } },
             { state: { contains: "Test", mode: "insensitive" } },
+            { cpf: { contains: "Test", mode: "insensitive" } },
+            { voterId: { contains: "Test", mode: "insensitive" } },
+            { occupation: { contains: "Test", mode: "insensitive" } },
+            { politicalParty: { contains: "Test", mode: "insensitive" } },
           ],
         },
         orderBy: { createdAt: "desc" },

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Gender } from "../../types/contact";
 
 export const contactFormSchema = z.object({
   name: z.string().trim().min(1, {
@@ -15,7 +16,7 @@ export const contactFormSchema = z.object({
   number: z.string().optional(),
   complement: z.string().optional(),
   dateOfBirth: z.date().optional(),
-  sex: z.enum(["MALE", "FEMALE"], {
+  sex: z.nativeEnum(Gender, {
     message: "Sexo é obrigatório.",
   }),
 });
