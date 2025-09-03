@@ -18,6 +18,8 @@ model User {
   Organization  Organization[]
   accounts      Account[]
   sessions      Session[]
+  demands       Demand[]
+  demandNotes   DemandNote[]
 
   @@map("user")
 }
@@ -87,6 +89,7 @@ model Contact {
   deletedAt      DateTime?
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  demands        Demand[]
 }
 
 model Organization {
@@ -102,6 +105,9 @@ model Organization {
   deletedAt   DateTime?
   user        User               @relation(fields: [owner], references: [id], onDelete: Cascade)
   contacts    Contact[]
+  demands     Demand[]
+  demandNotes DemandNote[]
+  demandTags  DemandTag[]
 }
 
 enum OrganizationStatus {
@@ -115,203 +121,69 @@ enum Gender {
   FEMALE
 }
 
-// ============================================================================
-// NEW MODELS FOR DEMAND/PROTOCOL + QUEUE + SLA + WORKFLOW DOMAIN
-// ============================================================================
-// Note: Contact and Organization models already exist in this schema
-
+// Modelo Demand MVP com multitenancy
 model Demand {
-  id              String       @id @db.Uuid
-  protocolNumber  String // Sequential protocol number per organization
+  id              String          @id
+  protocolNumber  String
   title           String
   description     String?
-  contactId       String?      @db.Uuid // References existing Contact model (scalar FK only)
-  organizationId  String       @db.Uuid // References existing Organization model (scalar FK only)
-  queueId         String       @db.Uuid
-  status          DemandStatus @default(NEW)
-  priority        Priority     @default(MEDIUM)
-  assignedToId    String?      @db.Uuid // References existing User model (scalar FK only)
-  slaStartAt      DateTime
-  slaDueAt        DateTime
-  slaBreachedAt   DateTime?
-  slaState        SLAState     @default(ON_TRACK)
-  resolutionNotes String?
-  closedAt        DateTime?
-  createdById     String       @db.Uuid // References existing User model (scalar FK only)
-  updatedById     String?      @db.Uuid // References existing User model (scalar FK only)
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
-  deletedAt       DateTime? // Soft delete
-
-  // Relations to models in this schema
-  queue         Queue           @relation(fields: [queueId], references: [id])
-  assignments   Assignment[]
-  statusHistory StatusHistory[]
-  comments      Comment[]
-  attachments   Attachment[]
-  demandTags    DemandTag[]
+  contactId       String?
+  organizationId  String
+  status          DemandStatus    @default(NEW)
+  priority        Priority        @default(MEDIUM)
+  createdById     String
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  
+  // Relacionamentos
+  contact         Contact?        @relation(fields: [contactId], references: [id])
+  organization    Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdBy       User           @relation(fields: [createdById], references: [id])
+  
+  // Relacionamentos opcionais para MVP
+  notes           DemandNote[]
+  tags            DemandTag[]
 
   @@unique([organizationId, protocolNumber])
-  @@index([organizationId, status])
-  @@index([organizationId, assignedToId])
-  @@index([organizationId, slaDueAt])
-  @@index([organizationId, createdAt])
-  @@map("demand")
 }
 
-model Queue {
-  id             String   @id @db.Uuid
-  name           String
-  description    String?
-  defaultSlaId   String?  @db.Uuid
-  organizationId String   @db.Uuid // References existing Organization model (scalar FK only)
+// Modelos relacionados para Demand com multitenancy
+model DemandNote {
+  id             String   @id
+  content        String
+  demandId       String
+  organizationId String
+  createdById    String
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-
-  // Relations to models in this schema
-  demands          Demand[]
-  escalationRules  EscalationRule[] @relation("QueueEscalationRules")
-  escalatedToQueue EscalationRule[] @relation("EscalationTargetQueue")
-  defaultSla       SLAPlan?         @relation("QueueDefaultSLA", fields: [defaultSlaId], references: [id])
-
-  @@map("queue")
-}
-
-model SLAPlan {
-  id                    String   @id @db.Uuid
-  name                  String
-  responseTimeMinutes   Int // Time to first response
-  resolutionTimeMinutes Int // Time to resolution
-  businessHours         Json? // JSON object with business hours configuration
-  organizationId        String   @db.Uuid // References existing Organization model (scalar FK only)
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
-
-  // Relations to models in this schema
-  queues Queue[] @relation("QueueDefaultSLA")
-
-  @@map("sla_plan")
-}
-
-model Assignment {
-  id           String    @id @db.Uuid
-  demandId     String    @db.Uuid
-  assignedToId String    @db.Uuid // References existing User model (scalar FK only)
-  assignedById String    @db.Uuid // References existing User model (scalar FK only)
-  assignedAt   DateTime  @default(now())
-  unassignedAt DateTime?
-  reason       String?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-
-  // Relations to models in this schema
-  demand Demand @relation(fields: [demandId], references: [id])
-
-  @@map("assignment")
-}
-
-model StatusHistory {
-  id          String       @id @db.Uuid
-  demandId    String       @db.Uuid
-  fromStatus  DemandStatus
-  toStatus    DemandStatus
-  changedById String       @db.Uuid // References existing User model (scalar FK only)
-  changedAt   DateTime     @default(now())
-  note        String?
-
-  // Relations to models in this schema
-  demand Demand @relation(fields: [demandId], references: [id])
-
-  @@map("status_history")
-}
-
-model Comment {
-  id         String    @id @db.Uuid
-  demandId   String    @db.Uuid
-  authorId   String    @db.Uuid // References existing User model (scalar FK only)
-  body       String
-  isInternal Boolean   @default(false)
-  createdAt  DateTime  @default(now())
-  deletedAt  DateTime? // Soft delete
-
-  // Relations to models in this schema
-  demand Demand @relation(fields: [demandId], references: [id])
-
-  @@map("comment")
-}
-
-model Attachment {
-  id           String    @id @db.Uuid
-  demandId     String    @db.Uuid
-  filename     String
-  url          String
-  uploadedById String    @db.Uuid // References existing User model (scalar FK only)
-  uploadedAt   DateTime  @default(now())
-  size         Int // File size in bytes
-  deletedAt    DateTime? // Soft delete
-
-  // Relations to models in this schema
-  demand Demand @relation(fields: [demandId], references: [id])
-
-  @@map("attachment")
-}
-
-model Tag {
-  id             String   @id @db.Uuid
-  name           String
-  color          String? // Hex color code
-  organizationId String   @db.Uuid // References existing Organization model (scalar FK only)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  // Relations to models in this schema
-  demandTags DemandTag[]
-
-  @@unique([organizationId, name])
-  @@map("tag")
+  
+  demand         Demand       @relation(fields: [demandId], references: [id], onDelete: Cascade)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdBy      User         @relation(fields: [createdById], references: [id])
 }
 
 model DemandTag {
-  id        String   @id @db.Uuid
-  demandId  String   @db.Uuid
-  tagId     String   @db.Uuid
-  createdAt DateTime @default(now())
-
-  // Relations to models in this schema
-  demand Demand @relation(fields: [demandId], references: [id])
-  tag    Tag    @relation(fields: [tagId], references: [id])
-
-  @@unique([demandId, tagId])
-  @@map("demand_tag")
+  id             String   @id
+  name           String
+  color          String?  // Cor em formato hex (#FF0000)
+  demandId       String
+  organizationId String
+  createdAt      DateTime @default(now())
+  
+  demand         Demand       @relation(fields: [demandId], references: [id], onDelete: Cascade)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  @@unique([organizationId, demandId, name])
 }
 
-model EscalationRule {
-  id               String   @id @db.Uuid
-  queueId          String   @db.Uuid
-  thresholdMinutes Int // Minutes after which escalation triggers
-  action           String // Escalation action type
-  targetUserId     String?  @db.Uuid // References existing User model (scalar FK only)
-  targetQueueId    String?  @db.Uuid
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-
-  // Relations to models in this schema
-  queue       Queue  @relation("QueueEscalationRules", fields: [queueId], references: [id])
-  targetQueue Queue? @relation("EscalationTargetQueue", fields: [targetQueueId], references: [id])
-
-  @@map("escalation_rule")
-}
-
-// Enums for the new domain
+// Enums necessários para Demand
 enum DemandStatus {
   NEW
-  ASSIGNED
   IN_PROGRESS
   PENDING
   RESOLVED
   CLOSED
-  CANCELED
-  ESCALATED
+  CANCELLED
 }
 
 enum Priority {
@@ -319,10 +191,4 @@ enum Priority {
   MEDIUM
   HIGH
   URGENT
-}
-
-enum SLAState {
-  ON_TRACK
-  AT_RISK
-  BREACHED
 }
