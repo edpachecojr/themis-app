@@ -1,7 +1,7 @@
 import { DemandStatus, Priority } from "@prisma/client";
 
 export type DemandDto = {
-  id?: string;
+  id: string;
   protocolNumber: string;
   title: string;
   description?: string;
@@ -21,7 +21,7 @@ export type DemandUpdateDto = {
 };
 
 export type DemandNoteDto = {
-  id?: string;
+  id: string;
   content: string;
   demandId: string;
   organizationId: string;
@@ -33,7 +33,7 @@ export type DemandNoteUpdateDto = {
 };
 
 export type DemandTagDto = {
-  id?: string;
+  id: string;
   name: string;
   color?: string;
   demandId: string;

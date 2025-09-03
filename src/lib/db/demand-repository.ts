@@ -1,21 +1,19 @@
-import { Demand, DemandFilters, DemandListResponse } from "@/types/demand";
+import { Demand, DemandFilters, CreateDemandData } from "../../types/demand";
 import { prisma } from "./prisma";
-
-export interface PaginationResult<T> {
-  data: T[];
-  total: number;
-  totalPages: number;
-  currentPage: number;
-  itemsPerPage: number;
-}
+import { PaginationResult } from "./types";
 
 export class DemandRepository {
   toDemandType(prismaDemand: unknown): Demand {
     return prismaDemand as Demand;
   }
 
-  async create(data: Demand & { organizationId: string }): Promise<Demand> {
-    const created = await prisma.demand.create({ data });
+  async create(data: CreateDemandData): Promise<Demand> {
+    const created = await prisma.demand.create({
+      data: {
+        ...data,
+        id: crypto.randomUUID(),
+      },
+    });
 
     return this.toDemandType(created);
   }
@@ -282,7 +280,16 @@ export class DemandRepository {
     data: Partial<
       Omit<
         Demand,
-        "id" | "createdAt" | "createdById" | "organizationId" | "protocolNumber"
+        | "id"
+        | "createdAt"
+        | "createdById"
+        | "organizationId"
+        | "protocolNumber"
+        | "contact"
+        | "organization"
+        | "createdBy"
+        | "notes"
+        | "tags"
       >
     >
   ): Promise<Demand | null> {

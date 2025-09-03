@@ -19,7 +19,7 @@ import {
   PageHeader,
   PageHeaderContent,
   PageTitle,
-  PageHeaderDescription,
+  PageDescription,
   PageActions,
   PageContent,
 } from "@/components/layout/page-container";
@@ -71,7 +71,7 @@ export function UnderConstruction({
       <PageHeader>
         <PageHeaderContent>
           <PageTitle>{title}</PageTitle>
-          <PageHeaderDescription>{description}</PageHeaderDescription>
+          <PageDescription>{description}</PageDescription>
         </PageHeaderContent>
         {(showBackButton || showHomeButton) && (
           <PageActions>

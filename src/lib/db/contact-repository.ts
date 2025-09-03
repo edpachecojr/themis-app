@@ -1,13 +1,6 @@
 import { Contact } from "@/types/contact";
 import { prisma } from "./prisma";
-
-export interface PaginationResult<T> {
-  data: T[];
-  total: number;
-  totalPages: number;
-  currentPage: number;
-  itemsPerPage: number;
-}
+import { PaginationResult } from "./types";
 
 export class ContactRepository {
   toContactType(prismaContact: unknown): Contact {

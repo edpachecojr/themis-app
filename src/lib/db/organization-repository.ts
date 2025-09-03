@@ -1,13 +1,6 @@
 import { Organization } from "@/types/organization";
 import { prisma } from "./prisma";
-
-export interface PaginationResult<T> {
-  data: T[];
-  total: number;
-  totalPages: number;
-  currentPage: number;
-  itemsPerPage: number;
-}
+import { PaginationResult } from "./types";
 
 export class OrganizationRepository {
   toOrganizationType(prismaOrganization: unknown): Organization {

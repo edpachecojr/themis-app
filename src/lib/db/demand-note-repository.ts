@@ -1,4 +1,4 @@
-import { DemandNote } from "@/types/demand";
+import { DemandNote, CreateDemandNoteData } from "../../types/demand";
 import { prisma } from "./prisma";
 
 export class DemandNoteRepository {
@@ -7,9 +7,14 @@ export class DemandNoteRepository {
   }
 
   async create(
-    data: DemandNote & { organizationId: string }
+    data: CreateDemandNoteData
   ): Promise<DemandNote> {
-    const created = await prisma.demandNote.create({ data });
+    const created = await prisma.demandNote.create({ 
+      data: {
+        ...data,
+        id: crypto.randomUUID(),
+      }
+    });
 
     return this.toDemandNoteType(created);
   }
@@ -91,7 +96,7 @@ export class DemandNoteRepository {
     data: Partial<
       Omit<
         DemandNote,
-        "id" | "createdAt" | "createdById" | "demandId" | "organizationId"
+        "id" | "createdAt" | "createdById" | "demandId" | "organizationId" | "demand" | "organization" | "createdBy"
       >
     >
   ): Promise<DemandNote | null> {

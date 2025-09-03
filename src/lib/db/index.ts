@@ -4,3 +4,4 @@ export * from "./demand-note-repository";
 export * from "./demand-tag-repository";
 export * from "./organization-repository";
 export * from "./prisma";
+export * from "./types";

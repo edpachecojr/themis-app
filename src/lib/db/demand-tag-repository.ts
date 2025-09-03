@@ -1,4 +1,4 @@
-import { DemandTag } from "@/types/demand";
+import { DemandTag, CreateDemandTagData } from "../../types/demand";
 import { prisma } from "./prisma";
 
 export class DemandTagRepository {
@@ -7,9 +7,14 @@ export class DemandTagRepository {
   }
 
   async create(
-    data: DemandTag & { organizationId: string }
+    data: CreateDemandTagData
   ): Promise<DemandTag> {
-    const created = await prisma.demandTag.create({ data });
+    const created = await prisma.demandTag.create({ 
+      data: {
+        ...data,
+        id: crypto.randomUUID(),
+      }
+    });
 
     return this.toDemandTagType(created);
   }
@@ -105,7 +110,7 @@ export class DemandTagRepository {
     id: string,
     organizationId: string,
     data: Partial<
-      Omit<DemandTag, "id" | "createdAt" | "demandId" | "organizationId">
+      Omit<DemandTag, "id" | "createdAt" | "demandId" | "organizationId" | "demand" | "organization">
     >
   ): Promise<DemandTag | null> {
     try {
