@@ -165,7 +165,7 @@ export default function ContactForm({
                   </h3>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   <FormField
                     control={form.control}
                     name="name"
@@ -179,6 +179,69 @@ export default function ContactForm({
                           <Input
                             placeholder="Digite o nome completo"
                             {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="rg"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>RG</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Digite o RG" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="cpf"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>CPF</FormLabel>
+                        <FormControl>
+                          <PatternFormat
+                            format="###.###.###-##"
+                            mask="_"
+                            placeholder="000.000.000-00"
+                            value={field.value}
+                            onValueChange={(value) => {
+                              field.onChange(value.value);
+                            }}
+                            customInput={Input}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="phoneNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Número de telefone{" "}
+                          <span className="text-tertiary-red">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <PatternFormat
+                            format="(##) #####-####"
+                            mask="_"
+                            placeholder="(11) 99999-9999"
+                            value={field.value}
+                            onValueChange={(value) => {
+                              field.onChange(value.value);
+                            }}
+                            customInput={Input}
                           />
                         </FormControl>
                         <FormMessage />
@@ -202,9 +265,6 @@ export default function ContactForm({
                       </FormItem>
                     )}
                   />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
                     name="dateOfBirth"
@@ -240,6 +300,9 @@ export default function ContactForm({
                       </FormItem>
                     )}
                   />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   <FormField
                     control={form.control}
                     name="sex"
@@ -260,56 +323,6 @@ export default function ContactForm({
                             <SelectItem value="FEMALE">Feminino</SelectItem>
                           </SelectContent>
                         </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="phoneNumber"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          Número de telefone{" "}
-                          <span className="text-tertiary-red">*</span>
-                        </FormLabel>
-                        <FormControl>
-                          <PatternFormat
-                            format="(##) #####-####"
-                            mask="_"
-                            placeholder="(11) 99999-9999"
-                            value={field.value}
-                            onValueChange={(value) => {
-                              field.onChange(value.value);
-                            }}
-                            customInput={Input}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="cpf"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>CPF</FormLabel>
-                        <FormControl>
-                          <PatternFormat
-                            format="###.###.###-##"
-                            mask="_"
-                            placeholder="000.000.000-00"
-                            value={field.value}
-                            onValueChange={(value) => {
-                              field.onChange(value.value);
-                            }}
-                            customInput={Input}
-                          />
-                        </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -488,19 +501,6 @@ export default function ContactForm({
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="rg"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>RG</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Digite o RG" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
                   <FormField
                     control={form.control}
                     name="voterId"

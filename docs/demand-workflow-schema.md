@@ -361,3 +361,4 @@ const history = await prisma.statusHistory.findMany({
 4. Implementar middleware de multi-tenancy
 5. Criar testes para os novos modelos
 6. Documentar APIs e endpoints
+
