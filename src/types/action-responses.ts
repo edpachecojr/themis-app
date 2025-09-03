@@ -1,4 +1,5 @@
 import { Contact } from "./contact";
+import { Demand, DemandNote, DemandTag } from "./demand";
 
 export interface ActionResponse<T = unknown> {
   ok: boolean;
@@ -9,3 +10,17 @@ export interface ActionResponse<T = unknown> {
 // Tipos específicos para actions de contact usando o tipo genérico
 export type ContactActionResponse = ActionResponse<Contact>;
 export type ContactsActionResponse = ActionResponse<Contact[]>;
+
+// Tipos específicos para actions de demand usando o tipo genérico
+export type DemandActionResponse = ActionResponse<Demand>;
+export type DemandsActionResponse = ActionResponse<Demand[]>;
+export type DemandNoteActionResponse = ActionResponse<DemandNote>;
+export type DemandNotesActionResponse = ActionResponse<DemandNote[]>;
+export type DemandTagActionResponse = ActionResponse<DemandTag>;
+export type DemandTagsActionResponse = ActionResponse<DemandTag[]>;
+export type DemandListActionResponse = ActionResponse<{
+  demands: Demand[];
+  total: number;
+  page: number;
+  limit: number;
+}>;
