@@ -90,6 +90,46 @@ model Contact {
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   demands        Demand[]
+  
+  // Campos específicos para CRM Parlamentar
+  cpf            String?      // CPF do cidadão
+  rg             String?      // RG do cidadão
+  voterId        String?      // Título de Eleitor
+  maritalStatus  MaritalStatus? // Estado civil
+  occupation     String?      // Profissão/Ocupação
+  education      EducationLevel? // Nível de educação
+  income         String?      // Faixa de renda
+  politicalParty String?      // Partido político (se filiado)
+  isVoter        Boolean      @default(true) // É eleitor ativo
+  votingZone     String?      // Zona eleitoral
+  votingSection  String?      // Seção eleitoral
+  
+  // Informações de contato adicionais
+  whatsapp       String?      // Número do WhatsApp
+  instagram      String?      // Usuário do Instagram
+  facebook       String?      // Usuário do Facebook
+  linkedin       String?      // Perfil do LinkedIn
+  
+  // Informações familiares
+  spouseName     String?      // Nome do cônjuge
+  childrenCount  Int?         // Número de filhos
+  dependents     Int?         // Número de dependentes
+  
+  // Informações de interesse político
+  politicalInterests String[]  // Interesses políticos (tags)
+  votingHistory     String[]   // Histórico de votações importantes
+  participationLevel ParticipationLevel? // Nível de participação política
+  
+  // Campos de segmentação
+  ageGroup       AgeGroup?    // Faixa etária
+  socialClass    SocialClass? // Classe social
+  urbanRural     UrbanRural?  // Área urbana/rural
+  
+  // Índices para performance
+  @@index([organizationId, cpf])
+  @@index([organizationId, voterId])
+  @@index([organizationId, city, state])
+  @@index([organizationId, politicalParty])
 }
 
 model Organization {
@@ -119,6 +159,61 @@ enum OrganizationStatus {
 enum Gender {
   MALE
   FEMALE
+}
+
+// Novos enums para CRM Parlamentar
+enum MaritalStatus {
+  SINGLE
+  MARRIED
+  DIVORCED
+  WIDOWED
+  SEPARATED
+  CIVIL_UNION
+}
+
+enum EducationLevel {
+  ILLITERATE
+  INCOMPLETE_ELEMENTARY
+  COMPLETE_ELEMENTARY
+  INCOMPLETE_HIGH_SCHOOL
+  COMPLETE_HIGH_SCHOOL
+  INCOMPLETE_COLLEGE
+  COMPLETE_COLLEGE
+  GRADUATE
+  MASTERS
+  DOCTORATE
+}
+
+enum ParticipationLevel {
+  VERY_LOW
+  LOW
+  MEDIUM
+  HIGH
+  VERY_HIGH
+}
+
+enum AgeGroup {
+  UNDER_18
+  AGE_18_25
+  AGE_26_35
+  AGE_36_45
+  AGE_46_55
+  AGE_56_65
+  OVER_65
+}
+
+enum SocialClass {
+  CLASS_A
+  CLASS_B
+  CLASS_C
+  CLASS_D
+  CLASS_E
+}
+
+enum UrbanRural {
+  URBAN
+  RURAL
+  PERIURBAN
 }
 
 // Modelo Demand MVP com multitenancy

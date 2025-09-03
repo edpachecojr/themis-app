@@ -1,4 +1,10 @@
-import { Contact } from "./contact";
+import {
+  Contact,
+  ContactListResponse,
+  CreateContactData,
+  UpdateContactData,
+  ContactFilters,
+} from "./contact";
 import { Demand, DemandNote, DemandTag } from "./demand";
 
 export interface ActionResponse<T = unknown> {
@@ -10,6 +16,10 @@ export interface ActionResponse<T = unknown> {
 // Tipos específicos para actions de contact usando o tipo genérico
 export type ContactActionResponse = ActionResponse<Contact>;
 export type ContactsActionResponse = ActionResponse<Contact[]>;
+export type ContactListActionResponse = ActionResponse<ContactListResponse>;
+export type CreateContactActionResponse = ActionResponse<CreateContactData>;
+export type UpdateContactActionResponse = ActionResponse<UpdateContactData>;
+export type ContactFiltersActionResponse = ActionResponse<ContactFilters>;
 
 // Tipos específicos para actions de demand usando o tipo genérico
 export type DemandActionResponse = ActionResponse<Demand>;
