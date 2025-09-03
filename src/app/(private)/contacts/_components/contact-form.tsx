@@ -147,7 +147,7 @@ export default function ContactForm({
         message="Aguarde enquanto salvamos as informações..."
       />
 
-      <Card className="max-w-4xl mx-auto">
+      <Card className="w-full">
         <CardHeader>
           <CardTitle className="text-xl font-semibold">
             {isEditMode ? "Editar Contato" : "Novo Contato"}
