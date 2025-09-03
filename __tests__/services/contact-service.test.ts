@@ -13,6 +13,19 @@ vi.mock("@/services/contact-service", () => ({
     getAllPaginated: vi.fn(),
     getAllPaginatedWithSearch: vi.fn(),
     isContactOwner: vi.fn(),
+    // Novos métodos parlamentares
+    getByCpf: vi.fn(),
+    getByVoterId: vi.fn(),
+    getByPoliticalParty: vi.fn(),
+    getByAgeGroup: vi.fn(),
+    getBySocialClass: vi.fn(),
+    getByEducation: vi.fn(),
+    getByUrbanRural: vi.fn(),
+    getByVoterStatus: vi.fn(),
+    getAllPaginatedWithAdvancedFilters: vi.fn(),
+    getParliamentaryStats: vi.fn(),
+    getByPoliticalInterests: vi.fn(),
+    getByParticipationLevel: vi.fn(),
   })),
 }));
 
@@ -32,7 +45,7 @@ describe("ContactService", () => {
           name: "Test Contact 1",
           email: "test1@example.com",
           phoneNumber: "+1234567890",
-          sex: "MALE" as const,
+          sex: "MALE" as any,
           address: "123 Test St",
           neighborhood: "Test Neighborhood",
           city: "Test City",
@@ -47,6 +60,32 @@ describe("ContactService", () => {
           updatedAt: undefined,
           deletedAt: undefined,
           organizationId: "test-org-id",
+          // Campos parlamentares obrigatórios
+          isVoter: true,
+          politicalInterests: [],
+          votingHistory: [],
+          // Campos parlamentares opcionais
+          cpf: undefined,
+          rg: undefined,
+          voterId: undefined,
+          maritalStatus: undefined,
+          occupation: undefined,
+          education: undefined,
+          income: undefined,
+          politicalParty: undefined,
+          votingZone: undefined,
+          votingSection: undefined,
+          whatsapp: undefined,
+          instagram: undefined,
+          facebook: undefined,
+          linkedin: undefined,
+          spouseName: undefined,
+          childrenCount: undefined,
+          dependents: undefined,
+          participationLevel: undefined,
+          ageGroup: undefined,
+          socialClass: undefined,
+          urbanRural: undefined,
         },
       ] as Contact[];
 
@@ -67,7 +106,7 @@ describe("ContactService", () => {
         name: "Test Contact 1",
         email: "test1@example.com",
         phoneNumber: "+1234567890",
-        sex: "MALE" as const,
+        sex: "MALE" as any,
         address: "123 Test St",
         neighborhood: "Test Neighborhood",
         city: "Test City",
@@ -82,6 +121,32 @@ describe("ContactService", () => {
         updatedAt: undefined,
         deletedAt: undefined,
         organizationId: "test-org-id",
+        // Campos parlamentares obrigatórios
+        isVoter: true,
+        politicalInterests: [],
+        votingHistory: [],
+        // Campos parlamentares opcionais
+        cpf: undefined,
+        rg: undefined,
+        voterId: undefined,
+        maritalStatus: undefined,
+        occupation: undefined,
+        education: undefined,
+        income: undefined,
+        politicalParty: undefined,
+        votingZone: undefined,
+        votingSection: undefined,
+        whatsapp: undefined,
+        instagram: undefined,
+        facebook: undefined,
+        linkedin: undefined,
+        spouseName: undefined,
+        childrenCount: undefined,
+        dependents: undefined,
+        participationLevel: undefined,
+        ageGroup: undefined,
+        socialClass: undefined,
+        urbanRural: undefined,
       } as Contact;
 
       // Mock do método getById do serviço
@@ -109,7 +174,7 @@ describe("ContactService", () => {
         name: "New Contact",
         email: "new@example.com",
         phoneNumber: "+1234567890",
-        sex: "FEMALE" as const,
+        sex: "FEMALE" as any, // Usar any temporariamente para compatibilidade
         address: "456 New St",
         neighborhood: "New Neighborhood",
         city: "New City",
@@ -154,7 +219,7 @@ describe("ContactService", () => {
         name: "Updated Contact",
         email: "updated@example.com",
         phoneNumber: "+1234567890",
-        sex: "MALE" as const,
+        sex: "MALE" as any,
         address: "123 Test St",
         neighborhood: "Test Neighborhood",
         city: "Test City",
@@ -169,6 +234,32 @@ describe("ContactService", () => {
         updatedAt: new Date(),
         deletedAt: undefined,
         organizationId: "test-org-id",
+        // Campos parlamentares obrigatórios
+        isVoter: true,
+        politicalInterests: [],
+        votingHistory: [],
+        // Campos parlamentares opcionais
+        cpf: undefined,
+        rg: undefined,
+        voterId: undefined,
+        maritalStatus: undefined,
+        occupation: undefined,
+        education: undefined,
+        income: undefined,
+        politicalParty: undefined,
+        votingZone: undefined,
+        votingSection: undefined,
+        whatsapp: undefined,
+        instagram: undefined,
+        facebook: undefined,
+        linkedin: undefined,
+        spouseName: undefined,
+        childrenCount: undefined,
+        dependents: undefined,
+        participationLevel: undefined,
+        ageGroup: undefined,
+        socialClass: undefined,
+        urbanRural: undefined,
       } as Contact;
 
       // Mock do método update do serviço
@@ -313,6 +404,159 @@ describe("ContactService", () => {
       const result = await service.isContactOwner("test-contact-id");
 
       expect(result).toBe(false);
+    });
+  });
+
+  // === TESTES PARA MÉTODOS PARLAMENTARES ===
+
+  describe("getByCpf", () => {
+    it("should get contact by CPF successfully", async () => {
+      const mockContact = {
+        id: "test-contact-1",
+        name: "Test Contact 1",
+        cpf: "12345678901",
+      } as Contact;
+
+      vi.mocked(service.getByCpf).mockResolvedValue(mockContact);
+
+      const result = await service.getByCpf("12345678901");
+
+      expect(service.getByCpf).toHaveBeenCalledWith("12345678901");
+      expect(result).toEqual(mockContact);
+    });
+
+    it("should return null when CPF not found", async () => {
+      vi.mocked(service.getByCpf).mockResolvedValue(null);
+
+      const result = await service.getByCpf("99999999999");
+
+      expect(result).toBeNull();
+    });
+  });
+
+  describe("getByVoterId", () => {
+    it("should get contact by voter ID successfully", async () => {
+      const mockContact = {
+        id: "test-contact-1",
+        name: "Test Contact 1",
+        voterId: "123456789012",
+      } as Contact;
+
+      vi.mocked(service.getByVoterId).mockResolvedValue(mockContact);
+
+      const result = await service.getByVoterId("123456789012");
+
+      expect(service.getByVoterId).toHaveBeenCalledWith("123456789012");
+      expect(result).toEqual(mockContact);
+    });
+  });
+
+  describe("getByPoliticalParty", () => {
+    it("should get contacts by political party successfully", async () => {
+      const mockContacts = [
+        { id: "contact-1", name: "Contact 1", politicalParty: "Party A" },
+        { id: "contact-2", name: "Contact 2", politicalParty: "Party A" },
+      ] as Contact[];
+
+      vi.mocked(service.getByPoliticalParty).mockResolvedValue(mockContacts);
+
+      const result = await service.getByPoliticalParty("Party A");
+
+      expect(service.getByPoliticalParty).toHaveBeenCalledWith("Party A");
+      expect(result).toEqual(mockContacts);
+      expect(result).toHaveLength(2);
+    });
+  });
+
+  describe("getByAgeGroup", () => {
+    it("should get contacts by age group successfully", async () => {
+      const mockContacts = [
+        { id: "contact-1", name: "Contact 1", ageGroup: "AGE_18_25" },
+      ] as Contact[];
+
+      vi.mocked(service.getByAgeGroup).mockResolvedValue(mockContacts);
+
+      const result = await service.getByAgeGroup("AGE_18_25");
+
+      expect(service.getByAgeGroup).toHaveBeenCalledWith("AGE_18_25");
+      expect(result).toEqual(mockContacts);
+    });
+  });
+
+  describe("getByVoterStatus", () => {
+    it("should get active voters successfully", async () => {
+      const mockContacts = [
+        { id: "contact-1", name: "Contact 1", isVoter: true },
+        { id: "contact-2", name: "Contact 2", isVoter: true },
+      ] as Contact[];
+
+      vi.mocked(service.getByVoterStatus).mockResolvedValue(mockContacts);
+
+      const result = await service.getByVoterStatus(true);
+
+      expect(service.getByVoterStatus).toHaveBeenCalledWith(true);
+      expect(result).toEqual(mockContacts);
+      expect(result).toHaveLength(2);
+    });
+  });
+
+  describe("getParliamentaryStats", () => {
+    it("should get parliamentary statistics successfully", async () => {
+      const mockStats = {
+        totalContacts: 100,
+        totalVoters: 85,
+        voterPercentage: 85,
+        byAgeGroup: [],
+        bySocialClass: [],
+        byEducation: [],
+        byPoliticalParty: [],
+        byUrbanRural: [],
+      };
+
+      vi.mocked(service.getParliamentaryStats).mockResolvedValue(mockStats);
+
+      const result = await service.getParliamentaryStats();
+
+      expect(service.getParliamentaryStats).toHaveBeenCalled();
+      expect(result).toEqual(mockStats);
+      expect(result.totalContacts).toBe(100);
+      expect(result.voterPercentage).toBe(85);
+    });
+  });
+
+  describe("getAllPaginatedWithAdvancedFilters", () => {
+    it("should get paginated contacts with advanced filters successfully", async () => {
+      const filters = {
+        organizationId: "test-org-id",
+        ageGroup: "AGE_18_25" as any,
+        education: "COMPLETE_HIGH_SCHOOL" as any,
+        isVoter: true,
+      };
+
+      const mockResult = {
+        data: [{ id: "contact-1", name: "Contact 1" }] as Contact[],
+        total: 1,
+        totalPages: 1,
+        currentPage: 1,
+        itemsPerPage: 10,
+      };
+
+      vi.mocked(service.getAllPaginatedWithAdvancedFilters).mockResolvedValue(
+        mockResult
+      );
+
+      const result = await service.getAllPaginatedWithAdvancedFilters(
+        filters,
+        1,
+        10
+      );
+
+      expect(service.getAllPaginatedWithAdvancedFilters).toHaveBeenCalledWith(
+        filters,
+        1,
+        10
+      );
+      expect(result).toEqual(mockResult);
     });
   });
 });
