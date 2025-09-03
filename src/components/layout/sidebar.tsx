@@ -65,14 +65,14 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Sidebar */}
       <div
         className={cn(
-          "fixed top-16 left-0 z-50 w-64 bg-white/90 backdrop-blur-sm shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:top-16 lg:z-auto border-r border-neutral-200",
+          "fixed top-16 left-0 z-50 w-64 bg-white/90 backdrop-blur-sm shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:relative lg:top-0 lg:z-auto lg:border-r lg:border-neutral-200",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
         style={{ height: "calc(100vh - 4rem)" }}
       >
         <div className="flex flex-col h-full">
           {/* Navigation */}
-          <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
+          <nav className="flex-1 px-4 py-4 space-y-1">
             {/* Mobile close button */}
             <div className="flex justify-end mb-4 lg:hidden">
               <Button

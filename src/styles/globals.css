@@ -288,3 +288,96 @@
     @apply transition-all duration-200 ease-in-out;
   }
 }
+
+/* Scrollbar Customizado - Design Integrado à Themis */
+@layer utilities {
+  /* Scrollbar fino e elegante */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+
+  /* Track transparente */
+  .scrollbar-track-transparent {
+    scrollbar-color: transparent transparent;
+  }
+
+  /* Thumb com cores do design system */
+  .scrollbar-thumb-neutral-300 {
+    scrollbar-color: rgb(212 212 212) transparent;
+  }
+
+  .scrollbar-thumb-neutral-400 {
+    scrollbar-color: rgb(163 163 163) transparent;
+  }
+
+  /* Thumb arredondado */
+  .scrollbar-thumb-rounded-full {
+    scrollbar-color: rgb(212 212 212) transparent;
+  }
+
+  /* Estilos para Webkit (Chrome, Safari, Edge) */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-track-transparent::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thumb-neutral-300::-webkit-scrollbar-thumb {
+    background-color: rgb(212 212 212);
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    background-clip: content-box;
+  }
+
+  .scrollbar-thumb-neutral-400::-webkit-scrollbar-thumb {
+    background-color: rgb(163 163 163);
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    background-clip: content-box;
+  }
+
+  .scrollbar-thumb-rounded-full::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+  }
+
+  /* Hover effects para o scrollbar */
+  .hover\:scrollbar-thumb-neutral-400:hover::-webkit-scrollbar-thumb {
+    background-color: rgb(163 163 163);
+  }
+
+  /* Transições suaves */
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  /* Scrollbar praticamente invisível por padrão */
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    opacity: 0.6;
+  }
+
+  .scrollbar-thin:hover::-webkit-scrollbar-thumb {
+    opacity: 1;
+  }
+
+  /* Estilos específicos para Firefox */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(212 212 212) transparent;
+  }
+
+  /* Estilos para scrollbar em modo escuro (futuro) */
+  .dark .scrollbar-thumb-neutral-300::-webkit-scrollbar-thumb {
+    background-color: rgb(64 64 64);
+  }
+
+  .dark .scrollbar-thumb-neutral-400::-webkit-scrollbar-thumb {
+    background-color: rgb(82 82 82);
+  }
+
+  .dark .scrollbar-thin {
+    scrollbar-color: rgb(64 64 64) transparent;
+  }
+}
