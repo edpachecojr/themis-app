@@ -11,7 +11,14 @@ export const updateContact = actionClient
     try {
       const { id, ...updateData } = parsedInput;
 
-      const contact = await contactService.update(id, updateData);
+      // Mapear todos os campos possíveis para atualização
+      const mappedUpdateData = {
+        ...updateData,
+        // Campos básicos já estão incluídos automaticamente
+        // Campos parlamentares serão incluídos se fornecidos
+      };
+
+      const contact = await contactService.update(id, mappedUpdateData);
 
       if (!contact) {
         return { ok: false, error: "Contato não encontrado" };
