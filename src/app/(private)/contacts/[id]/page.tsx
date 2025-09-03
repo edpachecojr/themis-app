@@ -212,6 +212,92 @@ export default function ContactViewPage() {
             </CardContent>
           </Card>
 
+          {/* Informações Parlamentares */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <svg
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2-2H3a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                  />
+                </svg>
+                Informações Parlamentares
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">
+                    CPF
+                  </label>
+                  <p className="text-sm">{contact.cpf || "Não informado"}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">
+                    RG
+                  </label>
+                  <p className="text-sm">{contact.rg || "Não informado"}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">
+                    Título de Eleitor
+                  </label>
+                  <p className="text-sm">
+                    {contact.voterId || "Não informado"}
+                  </p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">
+                    Partido Político
+                  </label>
+                  <p className="text-sm">
+                    {contact.politicalParty || "Não informado"}
+                  </p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">
+                    Status de Eleitor
+                  </label>
+                  <p className="text-sm">
+                    {contact.isVoter ? "Eleitor Ativo" : "Não Eleitor"}
+                  </p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">
+                    Zona Eleitoral
+                  </label>
+                  <p className="text-sm">
+                    {contact.votingZone || "Não informado"}
+                  </p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">
+                    Seção Eleitoral
+                  </label>
+                  <p className="text-sm">
+                    {contact.votingSection || "Não informado"}
+                  </p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">
+                    Profissão/Ocupação
+                  </label>
+                  <p className="text-sm">
+                    {contact.occupation || "Não informado"}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Endereço */}
           <Card>
             <CardHeader>
@@ -271,6 +357,70 @@ export default function ContactViewPage() {
                     Estado
                   </label>
                   <p className="text-sm">{contact.state || "Não informado"}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Informações de Contato e Redes Sociais */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <svg
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+                  />
+                </svg>
+                Informações de Contato e Redes Sociais
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">
+                    Email
+                  </label>
+                  <p className="text-sm">{contact.email || "Não informado"}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">
+                    WhatsApp
+                  </label>
+                  <p className="text-sm">
+                    {contact.whatsapp || "Não informado"}
+                  </p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">
+                    Instagram
+                  </label>
+                  <p className="text-sm">
+                    {contact.instagram || "Não informado"}
+                  </p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">
+                    Facebook
+                  </label>
+                  <p className="text-sm">
+                    {contact.facebook || "Não informado"}
+                  </p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">
+                    LinkedIn
+                  </label>
+                  <p className="text-sm">
+                    {contact.linkedin || "Não informado"}
+                  </p>
                 </div>
               </div>
             </CardContent>

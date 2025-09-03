@@ -12,11 +12,39 @@ export const contactsTableColumns: ColumnDef<Contact>[] = [
     header: "Nome",
   },
   {
-    id: "email",
-    accessorKey: "email",
-    header: "Email",
+    id: "cpf",
+    accessorKey: "cpf",
+    header: "CPF",
+    cell: (params) => {
+      const contact = params.row.original;
+      return contact.cpf || "-";
+    },
     meta: {
       hideOnMobile: true,
+    },
+  },
+  {
+    id: "politicalParty",
+    accessorKey: "politicalParty",
+    header: "Partido",
+    cell: (params) => {
+      const contact = params.row.original;
+      return contact.politicalParty || "-";
+    },
+    meta: {
+      hideOnTablet: true,
+    },
+  },
+  {
+    id: "isVoter",
+    accessorKey: "isVoter",
+    header: "Eleitor",
+    cell: (params) => {
+      const contact = params.row.original;
+      return contact.isVoter ? "Sim" : "Não";
+    },
+    meta: {
+      hideOnTablet: true,
     },
   },
   {
@@ -29,15 +57,15 @@ export const contactsTableColumns: ColumnDef<Contact>[] = [
     },
   },
   {
-    id: "sex",
-    accessorKey: "sex",
-    header: "Sexo",
+    id: "city",
+    accessorKey: "city",
+    header: "Cidade",
     cell: (params) => {
       const contact = params.row.original;
-      return contact.sex === "MALE" ? "Masculino" : "Feminino";
+      return contact.city || "-";
     },
     meta: {
-      hideOnTablet: true,
+      hideOnMobile: true,
     },
   },
   {

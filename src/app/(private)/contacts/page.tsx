@@ -112,7 +112,10 @@ function ContactsContent() {
         <PageHeader>
           <PageHeaderContent>
             <PageTitle>Contatos</PageTitle>
-            <PageDescription>Gerencie cadastro de contatos</PageDescription>
+            <PageDescription>
+              CRM Parlamentar - Gerencie cadastro de eleitores e contatos
+              políticos
+            </PageDescription>
           </PageHeaderContent>
           <PageActions>
             <AddContactButton />
@@ -146,7 +149,10 @@ function ContactsContent() {
       <PageHeader>
         <PageHeaderContent>
           <PageTitle>Contatos</PageTitle>
-          <PageDescription>Gerencie cadastro de contatos</PageDescription>
+          <PageDescription>
+            CRM Parlamentar - Gerencie cadastro de eleitores e contatos
+            políticos
+          </PageDescription>
         </PageHeaderContent>
         <PageActions>
           <AddContactButton />
@@ -157,7 +163,7 @@ function ContactsContent() {
           <div className="flex justify-between items-center">
             <SearchBar
               onSearch={handleSearch}
-              placeholder="Buscar por nome, telefone ou endereço..."
+              placeholder="Buscar por nome, CPF, título de eleitor, partido político..."
               className="w-80"
               initialValue={currentSearch}
             />
