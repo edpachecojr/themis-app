@@ -6,8 +6,8 @@ import { AuthCallbackProvider } from "@/components/auth/auth-callback-provider";
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | HomeCare App",
-    default: "HomeCare App",
+    template: "%s | Themis App",
+    default: "Themis App",
   },
   description:
     "An application to help healthcare professionals manage home medical care, contacts, appointments, medical records, clinical progress, diagnoses, and more.",

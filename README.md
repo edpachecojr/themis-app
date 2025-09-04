@@ -1,6 +1,6 @@
-# Homecare App
+# Themis App
 
-Homecare App is designed to help healthcare professionals efficiently perform home medical care. It provides tools to manage contacts, appointments, medical records, clinical progress, diagnoses, and more.
+Themis App is designed to help healthcare professionals efficiently perform home medical care. It provides tools to manage contacts, appointments, medical records, clinical progress, diagnoses, and more.
 
 ## Getting Started
 
