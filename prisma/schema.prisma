@@ -148,6 +148,9 @@ model Organization {
   demands     Demand[]
   demandNotes DemandNote[]
   demandTags  DemandTag[]
+  
+  // Unidades organizacionais
+  offices     Office[]
 }
 
 enum OrganizationStatus {
@@ -238,6 +241,10 @@ model Demand {
   // Relacionamentos opcionais para MVP
   notes           DemandNote[]
   tags            DemandTag[]
+  
+  // Unidade responsável pela demanda
+  officeId        String?
+  office          Office?        @relation(fields: [officeId], references: [id])
 
   @@unique([organizationId, protocolNumber])
 }
@@ -286,4 +293,136 @@ enum Priority {
   MEDIUM
   HIGH
   URGENT
+}
+
+// ========================================
+// MODELO OFFICE GENÉRICO
+// ========================================
+
+// Office - Modelo genérico para unidades organizacionais
+model Office {
+  id          String      @id
+  name        String      // Nome da unidade (ex: "Gabinete Principal", "Consultório Cardiologia")
+  code        String      // Código único da unidade
+  description String?     // Descrição da unidade
+  type        OfficeType  // Tipo da unidade
+  status      OfficeStatus @default(ACTIVE)
+  
+  // Localização
+  address     String?     // Endereço completo
+  city        String?     // Cidade
+  state       String?     // Estado
+  zipCode     String?     // CEP
+  neighborhood String?    // Bairro
+  complement  String?     // Complemento
+  
+  // Contato
+  phone       String?     // Telefone
+  email       String?     // Email
+  whatsapp    String?     // WhatsApp
+  
+  // Configurações específicas por tipo
+  capacity    Int?        // Capacidade (leitos, consultórios, etc.)
+  maxUsers    Int         @default(10) // Máximo de usuários na unidade
+  
+  // Horário de funcionamento
+  openingHours String?    // Horário de funcionamento
+  isOpenOnWeekends Boolean @default(false)
+  
+  // Metadados específicos (JSON para flexibilidade)
+  metadata    Json?       // Dados específicos por tipo de unidade
+  
+  // Timestamps
+  createdAt   DateTime    @default(now())
+  createdBy   String?
+  updatedAt   DateTime    @updatedAt
+  updatedBy   String?
+  deletedAt   DateTime?
+  
+  // Relacionamentos
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  // Usuários da unidade
+  officeUsers OfficeUser[]
+  
+  // Demandas atribuídas à unidade
+  demands     Demand[]
+  
+  // Índices
+  @@unique([organizationId, code])
+  @@index([organizationId, type])
+  @@index([organizationId, status])
+  @@index([organizationId, city, state])
+  @@map("office")
+}
+
+// Relacionamento Usuário-Unidade com permissões
+model OfficeUser {
+  id          String      @id
+  userId      String      // ID do usuário
+  officeId    String      // ID da unidade
+  
+  // Permissões na unidade
+  role        OfficeRole  @default(STAFF)
+  permissions String[]    // Permissões específicas
+  isActive    Boolean     @default(true)
+  
+  // Datas de acesso
+  accessStartDate DateTime @default(now())
+  accessEndDate   DateTime? // Data de término do acesso
+  
+  // Timestamps
+  createdAt   DateTime    @default(now())
+  createdBy   String?
+  updatedAt   DateTime    @updatedAt
+  updatedBy   String?
+  
+  // Relacionamentos
+  office      Office      @relation(fields: [officeId], references: [id], onDelete: Cascade)
+  
+  // Índices
+  @@unique([userId, officeId])
+  @@index([officeId, role])
+  @@index([userId, isActive])
+  @@map("office_user")
+}
+
+// ========================================
+// ENUMS PARA OFFICE
+// ========================================
+
+enum OfficeType {
+  // Tipos para Gabinetes Parlamentares
+  MAIN_OFFICE        // Gabinete principal
+  REGIONAL_OFFICE    // Escritório regional
+  SERVICE_CENTER     // Centro de atendimento
+  SPECIALIZED_UNIT   // Unidade especializada
+  
+  // Tipos para Clínicas
+  CONSULTATION_ROOM  // Consultório
+  EMERGENCY_ROOM     // Sala de emergência
+  WARD              // Enfermaria
+  SURGERY_ROOM      // Sala de cirurgia
+  LABORATORY        // Laboratório
+  IMAGING_CENTER    // Centro de imagem
+}
+
+enum OfficeStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  MAINTENANCE
+}
+
+enum OfficeRole {
+  ADMIN           // Administrador da unidade
+  MANAGER         // Gerente
+  SUPERVISOR      // Supervisor
+  STAFF           // Funcionário
+  SPECIALIST      // Especialista
+  RECEPTIONIST    // Recepcionista
+  INTERN          // Estagiário
+  VOLUNTEER       // Voluntário
+  OTHER           // Outros
 }
